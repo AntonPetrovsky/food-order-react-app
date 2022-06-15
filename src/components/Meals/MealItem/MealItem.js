@@ -9,7 +9,7 @@ const MealItem = (props) => (
       <div className={classes.price}>{`$${props.meal.price}`}</div>
     </div>
     <div>
-      <MealItemForm />
+      <MealItemForm meal={props.meal} />
     </div>
   </li>
 );
