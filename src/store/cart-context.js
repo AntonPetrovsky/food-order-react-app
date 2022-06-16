@@ -2,22 +2,22 @@ import React, { useReducer } from "react";
 
 const CartContext = React.createContext({
   cartItems: [],
-  totalAmount: 0,
+  totalPrice: 0,
   addCartItem: () => {},
   removeCartItem: () => {},
 });
 
-const defaultCartState = { cartItems: [], totalAmount: 0 };
+const defaultCartState = { cartItems: [], totalPrice: 0 };
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
     const actualCartItems = state.cartItems.concat(action.cartItem);
-    const actualTotalAmount =
-      state.totalAmount + action.cartItem.price * action.cartItem.amount;
+    const actualTotalPrice =
+      state.totalPrice + action.cartItem.price * action.cartItem.amount;
 
     return {
       cartItems: actualCartItems,
-      totalAmount: actualTotalAmount,
+      totalPrice: actualTotalPrice,
     };
   }
 

@@ -1,19 +1,23 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import CartContext from "../../../store/cart-context";
 import Input from "../../UI/Input";
 import classes from "./MealItemForm.module.css";
 
 const MealItemForm = (props) => {
   const cartContext = useContext(CartContext);
+  const amountInputRef = useRef();
 
   const submitHandler = (event) => {
     event.preventDefault();
-    cartContext.addCartItem(props.meal);
+
+    const amount = Number(amountInputRef.current.value);
+    cartContext.addCartItem({ ...props.meal, amount: amount });
   };
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <Input
+        ref={amountInputRef}
         input={{
           label: "Amount",
           type: "number",
