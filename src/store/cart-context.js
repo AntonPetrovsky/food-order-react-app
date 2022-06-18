@@ -10,9 +10,9 @@ const CartContext = React.createContext({
 const defaultCartState = { cartItems: [], totalPrice: 0 };
 
 const cartReducer = (state, action) => {
-  if (action.type === "ADD") {
-    const cartItems = [...state.cartItems];
+  const cartItems = [...state.cartItems];
 
+  if (action.type === "ADD") {
     const found = cartItems.find(
       (cartItem) => cartItem.id === action.cartItem.id
     );
@@ -30,10 +30,22 @@ const cartReducer = (state, action) => {
     };
   }
 
+  if (action.type === "REMOVE") {
+    const index = cartItems.findIndex((cartItem) => cartItem.id === action.id);
+    const found = cartItems.at(index);
+
+    found.amount > 1 ? found.amount-- : cartItems.splice(index, 1);
+
+    const totalPrice = state.totalPrice - found.price;
+
+    return {
+      cartItems: cartItems,
+      totalPrice: totalPrice,
+    };
+  }
+
   return defaultCartState;
 };
-
-const removeCartItem = () => {};
 
 const CartContextProvider = (props) => {
   const [cartState, dispatchCartAction] = useReducer(
@@ -43,6 +55,8 @@ const CartContextProvider = (props) => {
 
   const addCartItem = (item) =>
     dispatchCartAction({ type: "ADD", cartItem: item });
+
+  const removeCartItem = (id) => dispatchCartAction({ type: "REMOVE", id: id });
 
   return (
     <CartContext.Provider

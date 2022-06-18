@@ -7,8 +7,17 @@ import classes from "./Cart.module.css";
 const Cart = (props) => {
   const cartContext = useContext(CartContext);
 
+  const addCartItem = (item) => cartContext.addCartItem({ ...item, amount: 1 });
+
+  const removeCartItem = (id) => cartContext.removeCartItem(id);
+
   const cartItems = cartContext.cartItems.map((item) => (
-    <CartItem key={item.id} item={item} />
+    <CartItem
+      key={item.id}
+      item={item}
+      onAdd={addCartItem.bind(null, item)}
+      onRemove={removeCartItem.bind(null, item.id)}
+    />
   ));
 
   const hasItems = cartItems.length > 0;
